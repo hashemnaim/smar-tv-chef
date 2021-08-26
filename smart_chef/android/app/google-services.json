@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1073712181640",
+    "project_id": "smartchef-no",
+    "storage_bucket": "smartchef-no.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073712181640:android:91ed729b21ea3e239eca3d",
+        "android_client_info": {
+          "package_name": "com.coolnet.smartchef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073712181640-7kf399hg9p7r4jjn6slkdmlj5gqip0bp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWe4JcRO9y1oMKnE5NPZvbprmUqFv5SkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073712181640-7kf399hg9p7r4jjn6slkdmlj5gqip0bp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1073712181640-n7ro5dih7ekqbh547m8bu41rnprd40b6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coolnet.smartchef"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
