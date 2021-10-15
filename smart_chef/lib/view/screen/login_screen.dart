@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:smart_chef/controller/connectvity_service.dart';
 import 'package:smart_chef/controller/get_auth.dart';
 import 'package:smart_chef/controller/server.dart';
+import 'package:smart_chef/controller/share_preferance.dart';
 import 'package:smart_chef/utils/colors.dart';
 import 'package:smart_chef/utils/images.dart';
 import 'package:smart_chef/view/widget/custom_text_form_field.dart';
@@ -14,10 +15,9 @@ import 'package:smart_chef/view/widget/loading_indicator.dart';
 class LoginScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController =
-      TextEditingController(text: kReleaseMode ? '' : '');
+      TextEditingController(text: ShereHelper.sHelper.getName() ?? "");
   final TextEditingController passwordController =
-      TextEditingController(text: kReleaseMode ? '' : '');
-
+      TextEditingController(text: ShereHelper.sHelper.getPassword() ?? "");
 
   AuthGet authGet = Get.find();
 
@@ -28,11 +28,9 @@ class LoginScreen extends StatelessWidget {
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
         authGet.isLoginLoading.value = true;
-
-      await  Server.serverProvider.login(data: {
-          'login': nameController.text,
-          'password': passwordController.text,
-        });
+        await Server.serverProvider.login(
+            nameController: nameController.text,
+            passwordController: passwordController.text);
       }
     }
   }
@@ -109,65 +107,73 @@ class LoginScreen extends StatelessWidget {
           children: [
             Spacer(),
             Container(
-              height: 90,
+              height: 60,
               margin: const EdgeInsets.only(right: 80),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(width: 10),
-                  SvgPicture.asset(domain),
-                                    SizedBox(width: 10),
+                  SvgPicture.asset(
+                    domain,
+                    height: 20,
+                    width: 20,
+                  ),
+                  SizedBox(width: 10),
 
-                  Text("Https//www.",     style: TextStyle(
+                  Text(
+                    "Https//www.",
+                    style: TextStyle(
                         color: grey5B6163,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w600
-                      ),),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
                   Expanded(
-                    child: TextFormField(
-                      controller:authGet. domenController.value,
-                      // focusNode: currentFocusNode,
-                      // textAlign: TextAlign.center,
-                      // textInputAction: TextInputAction.go,
-                      // obscureText: obscureText,
-                      // validator: validator,
-                      keyboardType: TextInputType.url,
-                      style: TextStyle(
-                        color: grey5B6163,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w600
-                      ),
+                    child: SizedBox(
+                      height: 50,
+                      child: TextFormField(
+                        controller: authGet.domenController.value,
+                        // focusNode: currentFocusNode,
+                        // textAlign: TextAlign.center,
+                        // textInputAction: TextInputAction.go,
+                        // obscureText: obscureText,
+                        // validator: validator,
+                        keyboardType: TextInputType.url,
+                        style: TextStyle(
+                            color: grey5B6163,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
 
-                      onEditingComplete: () {
-                        // if (nextFocusNode != null) {
-                        //   FocusScope.of(sl<NavigationService>().getContext())
-                        //       .requestFocus(nextFocusNode);
-                        // } else {
-                        //   FocusScope.of(sl<NavigationService>().getContext()).unfocus();
-                        // }
-                      },
-                      decoration: InputDecoration(
-                          // filled: true,
-                          // fillColor: grey5B6163,
-                          // hintText: hint,
-                          // hintStyle: _style,
-                          // suffixIcon: Icon(
-                          //   icon,
-                          //   color: greyDEDEDE,
-                          //   size: 30,
-                          // ),
-                          // prefixIcon: suffixIcon ??
-                          //     Icon(
-                          //       icon,
-                          //       color: Colors.transparent,
-                          //     ),
-                          border: InputBorder.none
-                          // OutlineInputBorder(
-                          //   borderRadius: BorderRadius.all(
-                          //     Radius.circular(0),
-                          //   ),
-                          // ),
-                          ),
+                        onEditingComplete: () {
+                          // if (nextFocusNode != null) {
+                          //   FocusScope.of(sl<NavigationService>().getContext())
+                          //       .requestFocus(nextFocusNode);
+                          // } else {
+                          //   FocusScope.of(sl<NavigationService>().getContext()).unfocus();
+                          // }
+                        },
+                        decoration: InputDecoration(
+                            // filled: true,
+                            // fillColor: grey5B6163,
+                            // hintText: hint,
+                            // hintStyle: _style,
+                            // suffixIcon: Icon(
+                            //   icon,
+                            //   color: greyDEDEDE,
+                            //   size: 30,
+                            // ),
+                            // prefixIcon: suffixIcon ??
+                            //     Icon(
+                            //       icon,
+                            //       color: Colors.transparent,
+                            //     ),
+                            border: InputBorder.none
+                            // OutlineInputBorder(
+                            //   borderRadius: BorderRadius.all(
+                            //     Radius.circular(0),
+                            //   ),
+                            // ),
+                            ),
+                      ),
                     ),
                   ),
 
@@ -193,7 +199,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 36),
+            SizedBox(height: 20),
             IntrinsicHeight(
               child: Row(
                 children: [
@@ -203,35 +209,41 @@ class LoginScreen extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                         children: [
-                          CustomTextFormField(
-                            controller: nameController,
-                            nextFocusNode: passwordFocus,
-                            textInputAction: TextInputAction.next,
-                            icon: Icons.person,
-                            hint: 'brukernavn',
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'kreves';
-                              }
+                          SizedBox(
+                            height: 60,
+                            child: CustomTextFormField(
+                              controller: nameController,
+                              nextFocusNode: passwordFocus,
+                              textInputAction: TextInputAction.next,
+                              icon: Icons.person,
+                              hint: 'brukernavn',
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'kreves';
+                                }
 
-                              return null;
-                            },
+                                return null;
+                              },
+                            ),
                           ),
                           SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: passwordController,
-                            currentFocusNode: passwordFocus,
-                            textInputAction: TextInputAction.done,
-                            obscureText: true,
-                            icon: Icons.vpn_key,
-                            hint: 'passord',
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'kreves';
-                              }
+                          SizedBox(
+                            height: 60,
+                            child: CustomTextFormField(
+                              controller: passwordController,
+                              currentFocusNode: passwordFocus,
+                              textInputAction: TextInputAction.done,
+                              obscureText: true,
+                              icon: Icons.vpn_key,
+                              hint: 'passord',
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'kreves';
+                                }
 
-                              return null;
-                            },
+                                return null;
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -239,28 +251,25 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 16),
                   Container(
-                    width: 90,
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(13),
-                        ),
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          saveForm();
-                        },
-                        child: Center(
-                          child: isLoading
-                              ? LoadingIndicator()
-                              : Icon(
-                                  loginSuccess
-                                      ? Icons.lock_open
-                                      : Icons.lock_outline,
-                                  color: Colors.white,
-                                  size: 50,
-                                ),
-                        ),
+                    width: 70,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(13),
+                      ),
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        saveForm();
+                      },
+                      child: Center(
+                        child: isLoading
+                            ? LoadingIndicator()
+                            : Icon(
+                                loginSuccess
+                                    ? Icons.lock_open
+                                    : Icons.lock_outline,
+                                color: Colors.white,
+                                size: 50,
+                              ),
                       ),
                     ),
                     decoration: BoxDecoration(

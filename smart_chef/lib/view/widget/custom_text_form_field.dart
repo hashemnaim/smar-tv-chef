@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_chef/utils/colors.dart';
 
-
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final Widget suffixIcon;
@@ -15,7 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final Color color;
 
-  static const TextStyle _style = TextStyle(fontSize: 30, color: greyDEDEDE);
+  static const TextStyle _style = TextStyle(fontSize: 20, color: greyDEDEDE);
 
   const CustomTextFormField({
     Key key,
@@ -28,13 +27,13 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.keyboardType,
-    this.obscureText = false, this.color,
+    this.obscureText = false,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return 
-    TextFormField(
+    return TextFormField(
       controller: controller,
       focusNode: currentFocusNode,
       textAlign: TextAlign.center,
@@ -59,7 +58,7 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: Icon(
           icon,
           color: greyDEDEDE,
-          size: 30,
+          size: 20,
         ),
         prefixIcon: suffixIcon ??
             Icon(
@@ -73,6 +72,5 @@ class CustomTextFormField extends StatelessWidget {
         ),
       ),
     );
- 
   }
 }

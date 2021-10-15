@@ -6,6 +6,8 @@ import 'package:smart_chef/controller/share_preferance.dart';
 import 'package:smart_chef/utils/images.dart';
 import 'package:smart_chef/view/screen/home_screen.dart';
 import 'package:smart_chef/view/screen/login_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'controller/notification_firebase.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -22,11 +24,13 @@ class _SplashState extends State<Splash> {
     Future.delayed(delay, () async {
       String theme = await ShereHelper.sHelper.getValue('theme');
       homeGet.dashpordThemes.value = int.parse(theme == null ? "1" : theme);
-      if (ShereHelper.sHelper.getValue("token") != null &&
-          ShereHelper.sHelper.getValue("domen") != null) {
-        auth.domenController.value.text =
-            await ShereHelper.sHelper.getValue("domen");
+      if (ShereHelper.sHelper.getToken() != null ||
+          ShereHelper.sHelper.getDomin() != null) {
+        auth.domenController.value.text = ShereHelper.sHelper.getDomin();
+        print(ShereHelper.sHelper.getDomin());
+        homeGet.token.value = ShereHelper.sHelper.getToken();
         homeGet.getDashboard();
+        NotificationHelper().initialNotification();
 
         Get.offAll(() => HomeScreen());
       } else {

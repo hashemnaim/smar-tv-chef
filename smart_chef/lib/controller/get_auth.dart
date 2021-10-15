@@ -7,7 +7,7 @@ import 'package:smart_chef/view/screen/login_screen.dart';
 
 class AuthGet extends GetxController {
   RxBool isLoginLoading = false.obs;
-   Rx<TextEditingController> domenController =TextEditingController().obs;
+  Rx<TextEditingController> domenController = TextEditingController().obs;
 
   RxBool loginSuccess = false.obs;
 

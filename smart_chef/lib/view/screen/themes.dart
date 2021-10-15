@@ -17,19 +17,17 @@ class Themes extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                      onTap: ()async {
+                      onTap: () async {
                         homeGet.dashpordThemes.value = 1;
                         await ShereHelper.sHelper.addNew("theme", "1");
-
                       },
                       child:
                           theme("Theme 1", "assets/images/dashpord1.png", 1)),
                   Spacer(),
                   InkWell(
-                      onTap: () async{
+                      onTap: () async {
                         homeGet.dashpordThemes.value = 2;
                         await ShereHelper.sHelper.addNew("theme", "2");
-
                       },
                       child:
                           theme("Theme 2", "assets/images/dashpord2.png", 2)),
@@ -39,9 +37,9 @@ class Themes extends StatelessWidget {
           ),
           Expanded(
             child: InkWell(
-                onTap: ()async {
+                onTap: () async {
                   homeGet.dashpordThemes.value = 3;
-await ShereHelper.sHelper.addNew("theme", "3");
+                  await ShereHelper.sHelper.addNew("theme", "3");
                 },
                 child: theme("Theme 3", "assets/images/dashpord3.png", 3)),
           ),

@@ -26,8 +26,9 @@ dependencies:
   screenshot: ^0.3.0
   cached_network_image: ^2.5.0
   get: ^3.26.0
-  bluetooth_print:
-    path: ../
+  flutter_screenutil: ^4.0.3+2
+  # bluetooth_print:
+  #   path: ../
 
 dev_dependencies:
   flutter_test:

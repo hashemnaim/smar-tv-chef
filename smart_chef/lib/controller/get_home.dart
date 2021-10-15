@@ -24,13 +24,13 @@ class HomeGet extends GetxController {
   int numberOrdersDelivery = 0;
   int numberNotificationDelivery = 0;
   int numberNotificationOsra = 0;
-  RxInt dashpordThemes = 1.obs;
+  RxInt dashpordThemes = 0.obs;
   RxBool firstDDashboardLoad = true.obs;
   RxBool isconnected = false.obs;
   RxBool firstOrderHistoryLoad = false.obs;
   RxBool showNotifications = false.obs;
   DateTime timeString;
-  RxList ordersHistory = List().obs;
+  RxList ordersHistory = [].obs;
   var orderDeliveryDetailsMap;
   String type;
   RxBool isOrdersHistoryLoading = false.obs;
@@ -61,6 +61,7 @@ class HomeGet extends GetxController {
     _timer?.cancel();
     _timer = null;
   }
+
   RxBool muted = false.obs;
 
   changeNumberNotificationOsra() async {
@@ -99,12 +100,12 @@ class HomeGet extends GetxController {
   AudioPlayer audioPlayer = AudioPlayer();
   AudioCache audioCache = AudioCache();
 
-  void playAlert() async {
-    if (audioPlayer.state != AudioPlayerState.PLAYING) {
-      audioPlayer.state = AudioPlayerState.PLAYING;
-      audioPlayer = await audioCache.loop('sounds/alert.mp3');
-    }
-  }
+  // void playAlert() async {
+  //   if (audioPlayer.state != AudioPlayerState.PLAYING) {
+  //     audioPlayer.state = AudioPlayerState.PLAYING;
+  //     audioPlayer = await audioCache.loop('sounds/alert.mp3');
+  //   }
+  // }
 
   void toggleAlert({String orderCode, bool stop = true}) {
     if (stop) {
@@ -181,7 +182,7 @@ class HomeGet extends GetxController {
     }
 
     if (remainingTime.isNegative && enable) {
-      playAlert();
+      // playAlert();
       rangBefore[order.orderCode] = RingerModel(
         enable: true,
         dateTime: DateTime.now().toString(),
@@ -198,7 +199,7 @@ class HomeGet extends GetxController {
     errorLoadingDashboard = null;
     isDashboardLoading.value = true;
 
-    runZoned(() async {
+    // runZoned(() async {
     await Server.serverProvider.dashboardContent().then((value) {
       isDashboardLoading.value = false;
       firstDDashboardLoad.value = false;
@@ -210,19 +211,19 @@ class HomeGet extends GetxController {
         showNotifications.value = false;
       }
     });
-    }, onError: (e, s) {
-      if (e is DioError) {
-        String error = e.error;
-        print('DioError in getDashboard: $error');
-        errorLoadingDashboard.value = error;
-      } else {
-        errorLoadingDashboard.value = e.toString();
-      }
+    // }, onError: (e, s) {
+    // if (e is DioError) {
+    //   String error = e.error;
+    //   print('DioError in getDashboard: $error');
+    //   errorLoadingDashboard.value = error;
+    // } else {
+    //   errorLoadingDashboard.value = e.toString();
+    // }
 
-      print(e.toString());
-      print(s.toString());
-      isDashboardLoading.value = false;
-    });
+    //   print(e.toString());
+    //   print(s.toString());
+    //   isDashboardLoading.value = false;
+    // });
   }
 
   // void getOrdersHistory() {
@@ -269,7 +270,6 @@ class HomeGet extends GetxController {
       if (data['status'] > 2) {
         rangBefore.remove(data['order_code']);
       }
-      
     }, onError: (e, s) {
       if (e is DioError) {
         String error = e.error;

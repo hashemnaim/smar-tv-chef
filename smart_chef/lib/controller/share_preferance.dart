@@ -28,6 +28,42 @@ class ShereHelper {
     return sharedPreferences.setString(USER, userJson);
   }
 
+  String getToken() {
+    String x = sharedPreferences.getString('accessToken');
+    return x;
+  }
+
+  String getDomin() {
+    String x = sharedPreferences.getString('domin');
+    return x;
+  }
+
+  String getName() {
+    String x = sharedPreferences.getString('name');
+    return x;
+  }
+
+  String getPassword() {
+    String x = sharedPreferences.getString('password');
+    return x;
+  }
+
+  setPassword(String value) {
+    sharedPreferences.setString('password', value);
+  }
+
+  setName(String value) {
+    sharedPreferences.setString('name', value);
+  }
+
+  setDomin(String value) {
+    sharedPreferences.setString('domin', value);
+  }
+
+  setToken(String value) {
+    sharedPreferences.setString('accessToken', value);
+  }
+
   addNew(String key, String value) async {
     sharedPreferences = await initSharedPrefrences();
     sharedPreferences.setString(key, value);

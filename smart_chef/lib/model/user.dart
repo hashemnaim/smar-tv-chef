@@ -27,33 +27,31 @@ class Data {
   String createdAt;
   String updatedAt;
   int isSuperuser;
-  String authToken;
 
-  Data(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.login,
-      this.email,
-      this.isActivated,
-      this.roleId,
-      this.createdAt,
-      this.updatedAt,
-      this.isSuperuser,
-      this.authToken});
+  Data({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.login,
+    this.email,
+    this.isActivated,
+    this.roleId,
+    this.createdAt,
+    this.updatedAt,
+    this.isSuperuser,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    login = json['login'];
-    email = json['email'];
-    isActivated = json['is_activated'];
-    roleId = json['role_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    isSuperuser = json['is_superuser'];
-    authToken = json['auth_token'];
+    id = json['userData']['id'];
+    firstName = json["userData"]['first_name'];
+    lastName = json['userData']['last_name'];
+    login = json['userData']['login'];
+    email = json['userData']['email'];
+    isActivated = json["userData"]['is_activated'];
+    roleId = json["userData"]['role_id'];
+    createdAt = json["userData"]['created_at'];
+    updatedAt = json["userData"]['updated_at'];
+    isSuperuser = json["userData"]['is_superuser'];
   }
 
   // Map<String, dynamic> toJson() {

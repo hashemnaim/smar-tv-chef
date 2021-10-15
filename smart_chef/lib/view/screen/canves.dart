@@ -1,20 +1,14 @@
-import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:bluetooth_print/bluetooth_print.dart';
-import 'package:bluetooth_print/bluetooth_print_model.dart';
+//
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_home.dart';
 import 'package:smart_chef/model/order.dart';
-import 'package:smart_chef/utils/colors.dart';
 import 'package:smart_chef/view/widget/clipped_order.dart';
-
-import '../../PrintImage.dart';
-import 'fatora_screen.dart';
 
 class UiImagePainter extends CustomPainter {
   final ui.Image image;
@@ -92,66 +86,67 @@ class _CapturerState extends State<Capturer> {
   String bs64;
   Uint8List uint8List;
   HomeGet homeGet = Get.find();
-  BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
+  // BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
         children: [
-          SingleChildScrollView(
-            child: OverRepaintBoundary(
-              key: globalKey,
-              child: RepaintBoundary(
-                child: Visibility(
-                  child: Container(
-                    child: FatoraScreen(order: widget.order),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: 350,
-            height: 450,
-            color: grey2E3134,
-          ),
+          // SingleChildScrollView(
+          //   child: OverRepaintBoundary(
+          //     key: globalKey,
+          //     child: RepaintBoundary(
+          //       child: Visibility(
+          //         child: Container(
+          //           child: FatoraScreen(order: widget.order),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // Container(
+          //   width: 90.w,
+          //   height: 350.h,
+          //   color: grey2E3134,
+          //   decoration: BoxDecoration(),
+          // ),
           ClippedOrder(
             order: widget.order,
             isNotification: widget.isNotification,
             isDetailsView: widget.isDetailsView,
             key: widget.key,
             printt: () async {
-              var renderObject = globalKey.currentContext.findRenderObject();
-              RenderRepaintBoundary boundary = renderObject;
-              ui.Image captureImage = await boundary.toImage();
-              byteData =
-                  await captureImage.toByteData(format: ui.ImageByteFormat.png);
-              uint8List = byteData.buffer.asUint8List();
-              bs64 = base64Encode(uint8List);
-              if (homeGet.isconnected.value == false) {
-                Get.defaultDialog(
-                    title: "Velg skriveren",
-                    onCancel: () {
-                      navigator.pop();
-                    },
-                    content: PrintImage(
-                      img: bs64,
-                    ));
-              } else {
-                Map<String, dynamic> config = Map();
-                config['width'] = 40;
-                config['height'] = 70;
-                config['gap'] = 1;
-                List<LineText> list1 = List();
-                list1.add(LineText(
-                  type: LineText.TYPE_IMAGE,
-                  x: 10,
-                  y: 10,
-                  content: bs64,
-                ));
+              // var renderObject = globalKey.currentContext.findRenderObject();
+              // RenderRepaintBoundary boundary = renderObject;
+              // ui.Image captureImage = await boundary.toImage();
+              // byteData =
+              //     await captureImage.toByteData(format: ui.ImageByteFormat.png);
+              // uint8List = byteData.buffer.asUint8List();
+              // bs64 = base64Encode(uint8List);
+              // if (homeGet.isconnected.value == false) {
+              //   Get.defaultDialog(
+              //       title: "Velg skriveren",
+              //       onCancel: () {
+              //         navigator.pop();
+              //       },
+              //       content: PrintImage(
+              //         img: bs64,
+              //       ));
+              // } else {
+              //   Map<String, dynamic> config = Map();
+              //   config['width'] = 40;
+              //   config['height'] = 70;
+              //   config['gap'] = 1;
+              //   List<LineText> list1 = List();
+              //   list1.add(LineText(
+              //     type: LineText.TYPE_IMAGE,
+              //     x: 10,
+              //     y: 10,
+              //     content: bs64,
+              //   ));
 
-                await bluetoothPrint.printReceipt(config, list1);
-              }
+              //   await bluetoothPrint.printReceipt(config, list1);
+              // }
             },
           ),
         ],

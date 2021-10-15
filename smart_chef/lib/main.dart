@@ -6,18 +6,19 @@ import 'package:smart_chef/controller/get_auth.dart';
 import 'package:smart_chef/controller/get_home.dart';
 import 'package:smart_chef/splash.dart';
 import 'package:get/get.dart';
-
-import 'controller/notification_firebase.dart';
+import 'controller/share_preferance.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.light));
+  await ShereHelper.sHelper.initSharedPrefrences();
+
   Get.lazyPut(() => HomeGet(), fenix: true);
   Get.lazyPut(() => AuthGet(), fenix: true);
-  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
@@ -30,20 +31,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    NotificationHelper().initialNotification();
+    Firebase.initializeApp();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Smart Chef',
-        theme: ThemeData(
-          fontFamily: 'Montserrat',
-          primarySwatch: Colors.grey,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Splash());
+    return ScreenUtilInit(
+      designSize: Size(375, 812),
+      allowFontScaling: true,
+      builder: () => GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Smart Chef',
+          theme: ThemeData(
+            fontFamily: 'Montserrat',
+            primarySwatch: Colors.grey,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: Splash()),
+    );
   }
 }

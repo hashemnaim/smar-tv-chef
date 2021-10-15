@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_home.dart';
 import 'package:smart_chef/controller/server.dart';
 import 'package:smart_chef/model/order.dart';
 import 'package:smart_chef/utils/colors.dart';
 import 'package:smart_chef/utils/smart_chef_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'loading_indicator.dart';
 import 'zigzag_clipper.dart';
@@ -40,7 +37,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
   PageController minutesController;
   bool isMaxHeight = false;
   double height = 0;
-  double maxHeight = 520;
+  double maxHeight = 320;
 
   bool toKitchenLoading = false;
   bool toDoneLoading = false;
@@ -91,11 +88,9 @@ class _ClippedOrderState extends State<ClippedOrder> {
   @override
   void initState() {
     startTimer();
-
     setState(() {});
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print(timeStamp.toString());
       isClipped();
     });
     minutesController = PageController(
@@ -127,14 +122,15 @@ class _ClippedOrderState extends State<ClippedOrder> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        width: 350,
+        width: 90.w,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 55,
+              height: 80.h,
               child: Row(
                 children: [
-                  SizedBox(width: 10),
+                  SizedBox(width: 6.w),
                   Visibility(
                     visible: !widget.isNotification && !widget.isDetailsView,
                     child: Text(
@@ -147,22 +143,22 @@ class _ClippedOrderState extends State<ClippedOrder> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18.sp,
                       ),
                     ),
                   ),
                   Spacer(),
-                  Visibility(
-                    visible: !widget.isNotification,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.print,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => widget.printt(),
-                    ),
-                  ),
+                  // Visibility(
+                  //   visible: !widget.isNotification,
+                  //   child: IconButton(
+                  //     icon: Icon(
+                  //       Icons.print,
+                  //       color: Colors.white,
+                  //       size: 15,
+                  //     ),
+                  //     onPressed: () => widget.printt(),
+                  //   ),
+                  // ),
                   Visibility(
                     visible: !widget.isDetailsView,
                     child: IconButton(
@@ -171,7 +167,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                             ? Icons.notifications
                             : Icons.notifications_off,
                         color: Colors.white,
-                        size: 30,
+                        size: 16,
                       ),
                       onPressed: () {
                         homeGet.toggleAlert(
@@ -188,7 +184,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                           ? Icons.directions_run
                           : SmartChef.dish,
                       color: Colors.white,
-                      size: widget.order.delivery == "delivery" ? 30 : 26,
+                      size: widget.order.delivery == "delivery" ? 20 : 18,
                     ),
                     onPressed: () {},
                   ),
@@ -208,7 +204,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
             Column(children: [
               Container(
                 color: greyDEDEDE,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,28 +217,25 @@ class _ClippedOrderState extends State<ClippedOrder> {
                           widget.order.customerName,
                           textAlign: TextAlign.end,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          height: 4,
+                          height: 4.h,
                         ),
                         Text(
                           '${widget.order.customerMobile}',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Container(
-                          // height: G,
-                          width: 230,
                           child: Text(
                             "${widget.order.address}",
-// widget.order.address.toString().length>40?"${widget.order.address}"+"\n":"${widget.order.address}",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -257,7 +250,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                             "#" + widget.order.orderCode ?? "",
                             textAlign: TextAlign.end,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14.sp,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
@@ -271,14 +264,14 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                     : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Text(
                                 widget.order.isPayed == true
                                     ? "Betalt"
                                     : "Ikke betalt",
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -300,12 +293,12 @@ class _ClippedOrderState extends State<ClippedOrder> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(Icons.assignment_outlined),
-                          SizedBox(width: 10),
+                          SizedBox(width: 10.w),
                           Expanded(
                             child: Text(
                               widget.order.note ?? '',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -318,7 +311,8 @@ class _ClippedOrderState extends State<ClippedOrder> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        bottom: isMaxHeight && widget.isNotification ? 0 : 30),
+                        bottom:
+                            isMaxHeight && widget.isNotification ? 0 : 10.h),
                     child: ZigZag(
                       isMaxHeight: isMaxHeight,
                       child: Container(
@@ -335,7 +329,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                 shrinkWrap: true,
                                 padding: EdgeInsets.only(
                                   bottom: isMaxHeight && !widget.isNotification
-                                      ? 100
+                                      ? 80.h
                                       : 0,
                                 ),
                                 children: [
@@ -353,7 +347,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                       separatorBuilder: (_, index) =>
                                           Container()),
                                   Container(
-                                    height: 2,
+                                    height: 2.h,
                                     color: Colors.grey[500],
                                   ),
                                   // SizedBox(height: 5),
@@ -364,7 +358,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                   Visibility(
                                     visible: widget.isNotification,
                                     child: SizedBox(
-                                      height: 165,
+                                      height: 150.h,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -373,7 +367,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                             flex: 3,
                                             child: Column(
                                               children: [
-                                                SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -383,9 +377,9 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                     Text(
                                                       'Ferdig etter',
                                                       style: TextStyle(
-                                                          fontSize: 20),
+                                                          fontSize: 20.sp),
                                                     ),
-                                                    SizedBox(width: 10),
+                                                    SizedBox(width: 10.w),
                                                     Container(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -416,19 +410,9 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                           //   ),
                                                           // ),
 
-                                                          SizedBox(width: 4),
+                                                          SizedBox(width: 3.w),
                                                           Text(
-                                                            "${minutes[currentMinuteIndex]}"
-                                                                // getMinute(
-                                                                //       duration:
-                                                                //           Duration(
-                                                                //         minutes:
-                                                                //             minutes[currentMinuteIndex] +
-                                                                //                     1 ??
-                                                                //                 0,
-                                                                //       ),
-                                                                //     ).toString()
-                                                                +
+                                                            "${minutes[currentMinuteIndex]}" +
                                                                 'min',
                                                             style: TextStyle(
                                                                 color: Colors
@@ -436,7 +420,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontSize: 24
+                                                                fontSize: 14.sp
                                                                 //  getHour() ==
                                                                 //             '' ||
                                                                 //         getHour() == '-'
@@ -449,7 +433,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: 10),
+                                                SizedBox(height: 6.h),
                                                 Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -457,7 +441,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                     // Spacer(),
                                                     Expanded(
                                                       child: Container(
-                                                        height: 100,
+                                                        height: 50.h,
                                                         // w
                                                         child: PageView(
                                                           controller:
@@ -483,14 +467,14 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                                       currentMinuteIndex
                                                                   ? TextStyle(
                                                                       fontSize:
-                                                                          35,
+                                                                          18.sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold,
                                                                     )
                                                                   : TextStyle(
                                                                       fontSize:
-                                                                          25,
+                                                                          15.sp,
                                                                       color: Colors
                                                                           .grey,
                                                                     ),
@@ -499,19 +483,19 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5),
+                                                    SizedBox(width: 5.w),
                                                     Text('min'),
                                                     // Spacer(),
-                                                    SizedBox(width: 5),
+                                                    SizedBox(width: 5.w),
                                                   ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          SizedBox(width: 10),
+                                          SizedBox(width: 4.w),
                                           Container(
-                                            width: 80,
-                                            height: 110,
+                                            width: 20.w,
+                                            height: 110.h,
                                             margin: const EdgeInsets.all(4),
                                             child: Material(
                                               type: MaterialType.transparency,
@@ -605,8 +589,8 @@ class _ClippedOrderState extends State<ClippedOrder> {
                     child: Visibility(
                       visible: !widget.isNotification && !widget.isDetailsView,
                       child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 20.w,
+                        height: 50.h,
                         margin: const EdgeInsets.all(10),
                         child: Material(
                           type: MaterialType.transparency,
@@ -632,14 +616,14 @@ class _ClippedOrderState extends State<ClippedOrder> {
                                   ? Icon(
                                       Icons.refresh,
                                       color: Colors.white,
-                                      size: 50,
+                                      size: 30,
                                     )
                                   : toDoneLoading
                                       ? LoadingIndicator()
                                       : Icon(
                                           Icons.check,
                                           color: Colors.white,
-                                          size: 50,
+                                          size: 30,
                                         ),
                             ),
                           ),
@@ -743,51 +727,52 @@ class _ClippedOrderState extends State<ClippedOrder> {
           color: product.changeComp != 0 ? Colors.yellow[100] : Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 4),
-
+              SizedBox(height: 2.h),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+                padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 3.w),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 44,
-                      width: 44,
+                    CircleAvatar(
+                      // height: 33.w,
+                      // width: 33.h,
+                      radius: 16.r,
+                      backgroundColor:
+                          product.quantity > 1 ? redF55B31 : grey31393C,
                       child: Center(
                         child: Text(
                           product.quantity.toString(),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      decoration: BoxDecoration(
-                        color: product.quantity > 1 ? redF55B31 : grey31393C,
-                        borderRadius: BorderRadius.all(Radius.circular(22)),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   color: product.quantity > 1 ? redF55B31 : grey31393C,
+                      //   borderRadius: BorderRadius.all(Radius.circular(22)),
+                      // ),
                     ),
-                    SizedBox(width: 6),
+                    SizedBox(width: 3.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${product.productName}',
+                            '${product.name}',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 2.h),
                           Row(
                             children: [
                               Text(
                                 '${product.size}',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 14.sp,
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -796,7 +781,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
                               Text(
                                 '${product.dough}',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 14.sp,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -809,320 +794,347 @@ class _ClippedOrderState extends State<ClippedOrder> {
                     Text(
                       '${product.spicy}',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 6),
-              // Container(
-              //   height: 20,
-              //   child: ListView.builder(
-              //     shrinkWrap: true,
-              //     primary: false,
-              //     scrollDirection: Axis.horizontal,
-              //     itemCount:
-              //     product.component.length,
-              //     itemBuilder: (_, index) =>
-              product.component.length == 0
-                  ? Container()
-                  : product.changeComp == 0
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 16),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: Text(
-                                      product.component
-                                          .map((e) => e)
-                                          .toList()
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.black),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                             
-                              product.entrees.length == 0
-                                  ? Container()
-                                  : Container(
-                                      width: 340,
-                                      height: 20,
-                                      // color: Colors.red,
-                                      child: Wrap(
-                                        children: [
-                                          ...List.generate(
-                                            product.entrees.length,
-                                            (index) => Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 2),
-                                              child: Text(
-                                                product.entrees[index],
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                    color: Colors.black),
+              SizedBox(height: 4.h),
+              Container(
+                  // height: 100,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      itemCount: product.data.length,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (_, index2) => product.data.length == 0
+                          ? Container()
+                          : product.changeComp == 0
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5.h, horizontal: 16.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      product.name ==
+                                              product.data[index2].productName
+                                          ? Container()
+                                          : Text(
+                                              '${product.data[index2].productName}',
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                            ],
-                          ),
-                        )
-                      : Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                              child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 285,
-                                  child: Wrap(
-                                    children: [
-                                      ...List.generate(
-                                        product.basicComponent.length,
-                                        (index) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 2),
-                                          child: Text(
-                                            product.basicComponent[index]
-                                                        ['extra'] ==
-                                                    0
-                                                ? product.basicComponent[index]
-                                                        ['name'] +
-                                                    (index ==
-                                                            product.basicComponent
-                                                                    .length -
-                                                                1
-                                                        ? ""
-                                                        : " -")
-                                                : "Extra " +
-                                                    product.basicComponent[
-                                                        index]['name'] +
-                                                    (index ==
-                                                                product.basicComponent
-                                                                        .length -
-                                                                    1
-                                                            ? ""
-                                                            : " -")
+                                      product.data[index2].component.length == 0
+                                          ? Container()
+                                          : Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Text(
+                                                    product
+                                                        .data[index2].component
+                                                        .map((e) => e)
+                                                        .toList()
                                                         .toString(),
-                                            style: TextStyle(
-                                                fontWeight: product
-                                                                .basicComponent[
-                                                            index]['extra'] ==
-                                                        0
-                                                    ? FontWeight.normal
-                                                    : FontWeight.bold,
-                                                fontSize: 14,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                      )
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                      SizedBox(height: 4.h),
+                                      product.data[index2].entrees.length == 0
+                                          ? Container()
+                                          : Column(
+                                              children: [
+                                                Container(
+                                                  width: 200.w,
+                                                  height: 16.h,
+                                                  // color: Colors.red,
+                                                  child: Wrap(
+                                                    children: [
+                                                      ...List.generate(
+                                                        product.data[index2]
+                                                            .entrees.length,
+                                                        (index) => Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      2),
+                                                          child: Text(
+                                                            product.data[index2]
+                                                                .entrees[index],
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 14.sp,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                     ],
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 18,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Text(
-                                    //   "Fjern : ",
-                                    //   style: TextStyle(
-                                    //     fontSize: 15,
-                                    //     color: Colors.black,
-                                    //     // fontWeight: FontWeight.bold
-                                    //   ),
-                                    // ),
-                                    Container(
-                                      width: 340,
-                                      child: Wrap(
-                                        children: [
-                                          ...List.generate(
-                                            product.delComponent.length,
-                                            (index) => Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 2),
-                                              child: Text(
-                                                product.delComponent[index]
-                                                            ['extra'] ==
-                                                        0
-                                                    ? product.delComponent[index]
-                                                            ['name'] +
-                                                        (index ==
-                                                                product.delComponent
-                                                                        .length -
-                                                                    1
-                                                            ? ""
-                                                            : " -")
-                                                    : "Extra " +
-                                                        product.delComponent[
-                                                            index]['name'] +
-                                                        (index ==
-                                                                    product.delComponent
-                                                                            .length -
-                                                                        1
-                                                                ? ""
-                                                                : " -")
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    // Container(
-                                    //   height:
-                                    //       product.delComponent.length * 15.0,
-                                    //   width: 290,
-                                    //   child: GridView.builder(
-                                    //     padding: EdgeInsets.zero,
-                                    //     gridDelegate:
-                                    //         SliverGridDelegateWithFixedCrossAxisCount(
-                                    //             crossAxisCount: 3,
-                                    //             mainAxisSpacing: 5,
-                                    //             crossAxisSpacing: 0,
-                                    //             childAspectRatio: 5),
-                                    //     itemCount: product.delComponent.length,
-                                    //     itemBuilder: (context, index) => Text(
-                                    //       product.delComponent[index]
-                                    //                   ['extra'] ==
-                                    //               0
-                                    //           ? product.delComponent[index]
-                                    //               ['name']
-                                    //           : "Extra " +
-                                    //               product.delComponent[index]
-                                    //                   ['name'],
-                                    //       style: TextStyle(
-                                    //           fontWeight: FontWeight.bold,
-                                    //           fontSize: 16,
-                                    //           color: Colors.red),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Text(
-                                    //   "Legg : ",
-                                    //   style: TextStyle(
-                                    //     fontSize: 15,
-                                    //     color: Colors.black,
-                                    //     // fontWeight: FontWeight.bold
-                                    //   ),
-                                    // ),
-
-                                    Container(
-                                      width: 340,
-                                      // color: Colors.red,
-                                      child: Wrap(
-                                        children: [
-                                          ...List.generate(
-                                            product.newComponent.length,
-                                            (index) => Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 2),
-                                              child: Text(
-                                                product.newComponent[index]
-                                                            ['extra'] ==
-                                                        0
-                                                    ? product.newComponent[index]
-                                                            ['name'] +
-                                                        (index ==
-                                                                product.newComponent
-                                                                        .length -
-                                                                    1
-                                                            ? ""
-                                                            : " -")
-                                                    : "Extra " +
-                                                        product.newComponent[
-                                                            index]['name'] +
-                                                        (index ==
-                                                                    product.newComponent
-                                                                            .length -
-                                                                        1
-                                                                ? ""
-                                                                : " -")
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                    color: product.newComponent[
+                                )
+                              : Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                      child: Padding(
+                                    padding: EdgeInsets.only(left: 4.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 155.w,
+                                          child: Wrap(
+                                            children: [
+                                              ...List.generate(
+                                                product.data[0].basicComponent
+                                                    .length,
+                                                (index) => Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 2),
+                                                  child: Text(
+                                                    product.data[index2].basicComponent[
                                                                     index]
                                                                 ['extra'] ==
                                                             0
-                                                        ? Colors.green[900]
-                                                        : Colors.black),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 18,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 25,
-                                      width: 270,
-                                      // color: Colors.red,
-                                      child: GridView.builder(
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                mainAxisSpacing: 5,
-                                                crossAxisSpacing: 0,
-                                                childAspectRatio: 5),
-                                        itemCount: product.entrees.length,
-                                        itemBuilder: (context, index) => Text(
-                                          product.entrees[index],
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
+                                                        ? product.data[index2]
+                                                                    .basicComponent[index]
+                                                                ['name'] +
+                                                            (index == product.data[0].basicComponent.length - 1
+                                                                ? ""
+                                                                : " -")
+                                                        : "Extra " +
+                                                            product.data[index2]
+                                                                    .basicComponent[
+                                                                index]['name'] +
+                                                            (index == product.data[0].basicComponent.length - 1
+                                                                    ? ""
+                                                                    : " -")
+                                                                .toString(),
+                                                    style: TextStyle(
+                                                        fontWeight: product
+                                                                        .data[
+                                                                            index2]
+                                                                        .basicComponent[index]
+                                                                    ['extra'] ==
+                                                                0
+                                                            ? FontWeight.normal
+                                                            : FontWeight.bold,
+                                                        fontSize: 14.sp,
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ))
-                          // height: 20,
-                          // decoration: BoxDecoration(color: Colors.yellow[100]),
-                          ),
+                                        SizedBox(
+                                          height: 16.h,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Text(
+                                            //   "Fjern : ",
+                                            //   style: TextStyle(
+                                            //     fontSize: 15,
+                                            //     color: Colors.black,
+                                            //     // fontWeight: FontWeight.bold
+                                            //   ),
+                                            // ),
+                                            product.data[index2].delComponent
+                                                        .length ==
+                                                    0
+                                                ? Container()
+                                                : Container(
+                                                    width: 200.w,
+                                                    child: Wrap(
+                                                      children: [
+                                                        ...List.generate(
+                                                          product
+                                                              .data[index2]
+                                                              .delComponent
+                                                              .length,
+                                                          (index) => Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        2),
+                                                            child: Text(
+                                                              product.data[index2].delComponent[
+                                                                              index]
+                                                                          [
+                                                                          'extra'] ==
+                                                                      0
+                                                                  ? product.data[0].delComponent[
+                                                                              index]
+                                                                          [
+                                                                          'name'] +
+                                                                      (index == product.data[0].delComponent.length - 1
+                                                                          ? ""
+                                                                          : " -")
+                                                                  : "Extra " +
+                                                                      product.data[index2].delComponent[
+                                                                              index]
+                                                                          [
+                                                                          'name'] +
+                                                                      (index == product.data[index2].delComponent.length - 1
+                                                                              ? ""
+                                                                              : " -")
+                                                                          .toString(),
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  color: Colors
+                                                                      .red),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 6.h,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            product.data[index2].newComponent
+                                                        .length ==
+                                                    0
+                                                ? Container()
+                                                : Container(
+                                                    width: 85.w,
+                                                    // color: Colors.red,
+                                                    child: Wrap(
+                                                        children: List.generate(
+                                                      product.data[index2]
+                                                          .newComponent.length,
+                                                      (index) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 1),
+                                                        child: Text(
+                                                          product.data[index2]
+                                                                          .newComponent[index]
+                                                                      [
+                                                                      'extra'] ==
+                                                                  0
+                                                              ? product.data[index2].newComponent[
+                                                                          index]
+                                                                      ['name'] +
+                                                                  (index ==
+                                                                          product.data[index2].newComponent.length -
+                                                                              1
+                                                                      ? ""
+                                                                      : " -")
+                                                              : "Extra " +
+                                                                  product
+                                                                          .data[0]
+                                                                          .newComponent[index]
+                                                                      ['name'] +
+                                                                  (index == product.data[0].newComponent.length - 1
+                                                                          ? ""
+                                                                          : " -")
+                                                                      .toString(),
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 14.sp,
+                                                              color: product.data[index2].newComponent[
+                                                                              index]
+                                                                          [
+                                                                          'extra'] ==
+                                                                      0
+                                                                  ? Colors.green[
+                                                                      900]
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                  ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 14.h,
+                                        ),
+                                        product.data[index2].entrees.length == 0
+                                            ? Container()
+                                            : Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 14.h,
+                                                    width: 170.w,
+                                                    // color: Colors.red,
+                                                    child: GridView.builder(
+                                                      padding: EdgeInsets.zero,
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount: 2,
+                                                              mainAxisSpacing:
+                                                                  5,
+                                                              crossAxisSpacing:
+                                                                  0,
+                                                              childAspectRatio:
+                                                                  5),
+                                                      itemCount: product
+                                                          .data[index2]
+                                                          .entrees
+                                                          .length,
+                                                      itemBuilder:
+                                                          (context, index) =>
+                                                              Text(
+                                                        product.data[index2]
+                                                            .entrees[index],
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                      ],
+                                    ),
+                                  ))
+                                  // height: 20,
+                                  // decoration: BoxDecoration(color: Colors.yellow[100]),
+                                  ))),
             ],
           ),
         ),
@@ -1132,7 +1144,7 @@ class _ClippedOrderState extends State<ClippedOrder> {
 
   Widget discountItem({String title, String amount}) {
     final TextStyle style = TextStyle(
-      fontSize: 16,
+      fontSize: 14.sp,
     );
 
     return Padding(

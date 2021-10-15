@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_chef/model/order.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FatoraScreen extends StatelessWidget {
   final Order order;
@@ -23,7 +24,7 @@ class FatoraScreen extends StatelessWidget {
     }
 
     return Container(
-      width: 300,
+      width: 90.w,
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -35,100 +36,126 @@ class FatoraScreen extends StatelessWidget {
               SizedBox(height: 5),
               Center(
                   child: Container(
-                      width: 180,
-                      height: 50,
+                      width: 120.w,
+                      height: 40.h,
                       child: Image.asset(
                         "assets/images/fatora.png",
                         color: Colors.black,
                       ))),
-              SizedBox(height: 5),
+              SizedBox(height: 6.h),
               Row(children: [
                 Icon(
                   Icons.person_outline,
                   color: Colors.black,
+                  size: 20,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 4.w),
                 Text(
                   order.customerName + " # " + order.id.toString(),
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      fontSize: 14.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ]),
+              SizedBox(height: 4.h),
               Row(children: [
                 Icon(
                   Icons.phone,
                   color: Colors.black,
+                  size: 20,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 4.w),
                 Text(
                   order.customerMobile,
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      fontSize: 14.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ]),
-              SizedBox(height: 5),
+              SizedBox(height: 4.h),
               Row(children: [
                 Icon(
                   Icons.car_repair,
                   color: Colors.black,
+                  size: 20,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 4.w),
                 Text(order.delivery,
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold)),
-                SizedBox(width: 20),
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(width: 10.w),
+                order.numberOfPerson == null
+                    ? Container()
+                    : Text(
+                        order.numberOfPerson.toString() ?? "1" + " Person",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+              ]),
+              SizedBox(height: 4.w),
+              Row(children: [
+                Icon(
+                  Icons.history_toggle_off,
+                  size: 20,
+                ),
+                SizedBox(width: 4.w),
                 Text(
-                  order.numberOfPerson.toString() + " Person",
+                  timeOrderRang +
+                      "  " +
+                      unitTime +
+                      "  " +
+                      "(${DateFormat('kk:mm').format(timeOrder)})",
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      fontSize: 14.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ]),
-              SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(children: [
-                  Icon(Icons.history_toggle_off),
-                  SizedBox(width: 10),
-                  Text(
-                    timeOrderRang +
-                        "  " +
-                        unitTime +
-                        "  " +
-                        "(${DateFormat('kk:mm').format(timeOrder)})",
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                ]),
-              ),
+              SizedBox(height: 4.w),
               order.delivery == "Takeaway"
                   ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(order.numberOfPerson.toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(width: 5),
-                          Text("x",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(width: 10),
-                          Text("Delivery",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          Spacer(),
-                          Text(order.total,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        order.numberOfPerson == null
+                            ? Container()
+                            : Text(order.numberOfPerson.toString() ?? "",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold)),
+                        order.numberOfPerson == null
+                            ? Container()
+                            : SizedBox(width: 2.w),
+                        order.numberOfPerson == null
+                            ? Container()
+                            : Text("x",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                        order.numberOfPerson == null
+                            ? Container()
+                            : SizedBox(width: 6.w),
+                        Text("Delivery",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                        Spacer(),
+                        Text(order.total,
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
                     ),
+              SizedBox(height: 4.w),
               Divider(
                 height: 1,
                 color: Colors.black,
@@ -137,6 +164,7 @@ class FatoraScreen extends StatelessWidget {
               Container(
                   child: Text(order.note,
                       style: TextStyle(
+                        fontSize: 14.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ))),
@@ -146,9 +174,9 @@ class FatoraScreen extends StatelessWidget {
                       height: 1,
                       color: Colors.black,
                     ),
-              order.note == "" ? Container() : SizedBox(height: 10),
+              order.note == "" ? Container() : SizedBox(height: 4.h),
               Container(
-                height: (25.0 * order.products.length),
+                height: (23.0.h * order.products.length),
                 child: ListView.builder(
                     itemCount: order.products.length,
                     itemBuilder: (context, index) {
@@ -158,25 +186,27 @@ class FatoraScreen extends StatelessWidget {
                           Text(
                             order.products[index].quantity.toString(),
                             style: TextStyle(
+                                fontSize: 14.sp,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(width: 5),
+                          SizedBox(width: 4.w),
                           Text(
                             "x",
                             style: TextStyle(
+                                fontSize: 18.sp,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 4.w),
                           Expanded(
                             child: Container(
                               child: Text(
-                                order.products[index].productName,
+                                order.products[index].name,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12),
+                                    fontSize: 16.sp),
                               ),
                             ),
                           ),
@@ -185,24 +215,25 @@ class FatoraScreen extends StatelessWidget {
                             order.products[index].price.toString(),
                             style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],
                       );
                     }),
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 4.h),
               Divider(
                 height: 1,
                 color: Colors.black,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
                 child: Row(children: [
                   Text(
                     "Total In nok",
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 20.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
@@ -210,7 +241,9 @@ class FatoraScreen extends StatelessWidget {
                   Text(
                     order.total,
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                        fontSize: 18.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
                   ),
                 ]),
               ),
@@ -218,7 +251,7 @@ class FatoraScreen extends StatelessWidget {
                 height: 1,
                 color: Colors.black,
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 10.h),
             ],
           ),
         ),

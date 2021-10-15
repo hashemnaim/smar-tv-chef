@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_home.dart';
-import 'package:smart_chef/controller/server.dart';
+import 'package:smart_chef/controller/share_preferance.dart';
 import 'package:smart_chef/model/order.dart';
 import 'package:smart_chef/utils/colors.dart';
 import 'package:smart_chef/view/widget/date_widget.dart';
@@ -14,8 +14,7 @@ class Dashboard1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Obx(() => homeGet.dashboardModel.value == null
+    return Obx(() => homeGet.dashboardModel.value == null
         ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -45,7 +44,8 @@ class Dashboard1 extends StatelessWidget {
                   children: [
                     NotificationsIcon(
                       shown: homeGet.showNotifications.value,
-                      notificationsCount:homeGet.dashboardModel.value.newOrders.length ?? 0,
+                      notificationsCount:
+                          homeGet.dashboardModel.value.newOrders.length ?? 0,
                       onTap: () {
                         homeGet.toggleNotificationsView();
                       },
@@ -149,7 +149,7 @@ class Dashboard1 extends StatelessWidget {
                     )
                   : IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () =>  homeGet.getDashboard(),
+                      onPressed: () => homeGet.getDashboard(),
                       icon: Icon(
                         Icons.refresh,
                         color: Colors.white,
@@ -157,6 +157,20 @@ class Dashboard1 extends StatelessWidget {
                       ),
                     ),
             ],
+          ),
+          Text(
+            ShereHelper.sHelper.getDomin(),
+            textAlign: TextAlign.center,
+            strutStyle: StrutStyle(
+              height: 0.8,
+              fontSize: 206,
+              forceStrutHeight: true,
+            ),
+            style: TextStyle(
+              color: grey484B4E,
+              fontSize: 206,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Spacer(),
           DateWidget(date: time),

@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_auth.dart';
+import 'package:smart_chef/controller/share_preferance.dart';
 import 'get_home.dart';
 
 class NotificationHelper {
@@ -34,7 +35,7 @@ class NotificationHelper {
         //   message['notification']['body'],
         // );
         apiGet.getDashboard();
-        apiGet.playAlert();
+        // apiGet.playAlert();
       },
       onLaunch: (Map<String, dynamic> message) async {
         this.message = message;
@@ -75,9 +76,10 @@ class NotificationHelper {
   }
 
   getToken() async {
-    firebaseMessaging
-        .subscribeToTopic('${auth.domenController.value.text ?? "all"}');
-    token = await firebaseMessaging.getToken();
+    print(auth.domenController.value.text);
+    firebaseMessaging.subscribeToTopic(ShereHelper.sHelper.getDomin());
+    // token = await firebaseMessaging.getToken();
+    // print(token);
 
     return token;
   }

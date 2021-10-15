@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_auth.dart';
 import 'package:smart_chef/controller/get_home.dart';
+import 'package:smart_chef/controller/share_preferance.dart';
 import 'package:smart_chef/utils/colors.dart';
 import 'package:smart_chef/utils/images.dart';
 import 'package:smart_chef/view/screen/support_screen.dart';
 import 'package:smart_chef/view/screen/themes.dart';
 import 'package:smart_chef/view/screen/widget/statistics.dart';
-import 'package:smart_chef/view/widget/notifications_icon.dart';
 import 'package:wakelock/wakelock.dart';
 import 'dashboard_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'widget/orders_history.dart';
+import 'orders_history.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget navigationBar({@required int selectedIndex}) {
     return Container(
-      width: 70,
+      width: 20.w,
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.dashboard,
-              size: 50,
+              size: 40,
               color: selectedIndex == 0 ? Colors.white : grey5B6163,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 40.h),
           IconButton(
             onPressed: () {
               homeGet.setCurrentScreen(index: 1);
@@ -107,11 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.assignment,
-              size: 50,
+              size: 40,
               color: selectedIndex == 1 ? Colors.white : grey5B6163,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 40.h),
           IconButton(
             onPressed: () {
               homeGet.setCurrentScreen(index: 2);
@@ -119,11 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.pie_chart,
-              size: 50,
+              size: 40,
               color: selectedIndex == 2 ? Colors.white : grey5B6163,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 40.h),
           IconButton(
             onPressed: () {
               homeGet.setCurrentScreen(index: 3);
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.theater_comedy,
-              size: 50,
+              size: 40,
               color: selectedIndex == 3 ? Colors.white : grey5B6163,
             ),
           ),
@@ -141,27 +142,28 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.contact_support_outlined,
-              size: 50,
+              size: 40,
               color: grey5B6163,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 40.h),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               authGet.isLoginLoading.value = false;
               authGet.loginSuccess.value = false;
+              await ShereHelper.sHelper.setToken(null);
+              // await ShereHelper.sHelper.setDomin(null);
+
               authGet.signOut();
             },
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.logout,
-              size: 50,
+              size: 40,
               color: grey5B6163,
             ),
           ),
           SizedBox(height: 10),
-      
-      
         ],
       ),
       decoration: BoxDecoration(

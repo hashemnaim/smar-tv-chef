@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_chef/controller/get_home.dart';
 import 'package:smart_chef/controller/server.dart';
+import 'package:smart_chef/controller/share_preferance.dart';
 import 'package:smart_chef/model/order.dart';
 import 'package:smart_chef/utils/colors.dart';
-import 'package:smart_chef/view/widget/clipped_order.dart';
 import 'package:smart_chef/view/widget/date_widget.dart';
 import 'package:smart_chef/view/widget/loading_indicator.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../canves.dart';
 
@@ -18,9 +21,19 @@ class Dashboard2 extends StatefulWidget {
 class _Dashboard2State extends State<Dashboard2> {
   HomeGet homeGet = Get.find();
 
+  Timer timer;
+
   @override
   void initState() {
     super.initState();
+    timer = Timer.periodic(
+        Duration(seconds: 10), (Timer t) => homeGet.getDashboard());
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -58,7 +71,7 @@ class _Dashboard2State extends State<Dashboard2> {
               children: [
                 Positioned(
                   bottom: 0,
-                  right: 20,
+                  right: 10,
                   child: Text(
                     '${homeGet.dashboardModel.value.countOrders ?? ""}',
                     textAlign: TextAlign.end,
@@ -82,11 +95,11 @@ class _Dashboard2State extends State<Dashboard2> {
                     : ordersDisplay(
                         orders: homeGet.dashboardModel.value.workingOrders,
                       ),
-                homeGet.dashboardModel.value.newOrders.isNotEmpty 
+                homeGet.dashboardModel.value.newOrders.isNotEmpty
                     ? Container(
                         // height: double.infinity,
-                        width: 1200,
-                        color: Colors.black54.withOpacity(0.5),
+                        // width: 1200,
+                        // color: Colors.black54.withOpacity(0.5),
                         child: Center(
                           child: ordersNotificationsDisplay(
                             notifications:
@@ -139,6 +152,15 @@ class _Dashboard2State extends State<Dashboard2> {
                       ),
                     ),
             ],
+          ),
+          Text(
+            "   " + ShereHelper.sHelper.getDomin(),
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              color: grey484B4E,
+              fontSize: 50.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Spacer(),
           DateWidget(date: time),
@@ -199,9 +221,9 @@ class _Dashboard2State extends State<Dashboard2> {
       shrinkWrap: true,
       primary: true,
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 7),
       itemCount: orders.length,
-      separatorBuilder: (_, index) => SizedBox(width: 16),
+      separatorBuilder: (_, index) => SizedBox(width: 8),
       itemBuilder: (_, index) => Capturer(
         key: Key(orders[index].orderCode),
         isNotification: false,
@@ -210,59 +232,59 @@ class _Dashboard2State extends State<Dashboard2> {
     );
   }
 
-  Widget orderRemainingTimeBuilder({String orderTime, int deliveryTime}) {
-    final DateTime deliverTime =
-        DateTime.parse(orderTime).add(Duration(minutes: deliveryTime - 1));
-    Duration remainingTime = deliverTime.difference(DateTime.now());
+  // Widget orderRemainingTimeBuilder({String orderTime, int deliveryTime}) {
+  //   final DateTime deliverTime =
+  //       DateTime.parse(orderTime).add(Duration(minutes: deliveryTime - 1));
+  //   Duration remainingTime = deliverTime.difference(DateTime.now());
 
-    List<String> dateComponents = remainingTime.toString().split(':');
-    String hour = dateComponents[0];
-    String minute = dateComponents[1];
-    return InkWell(
-      onTap: () {
-        homeGet.setNotificationView(show: true);
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(10),
-        color: hour.contains('-') ? redF55B31 : grey383D42,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              getHourString(hour: hour),
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: greyDEDEDE,
-              ),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  minute,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: greyDEDEDE,
-                  ),
-                ),
-                Text(
-                  'min',
-                  style: TextStyle(
-                    // fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: greyDEDEDE,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //   List<String> dateComponents = remainingTime.toString().split(':');
+  //   String hour = dateComponents[0];
+  //   String minute = dateComponents[1];
+  //   return InkWell(
+  //     onTap: () {
+  //       homeGet.setNotificationView(show: true);
+  //     },
+  //     child: Container(
+  //       margin: const EdgeInsets.only(bottom: 10),
+  //       padding: const EdgeInsets.all(10),
+  //       color: hour.contains('-') ? redF55B31 : grey383D42,
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             getHourString(hour: hour),
+  //             style: TextStyle(
+  //               fontSize: 36,
+  //               fontWeight: FontWeight.bold,
+  //               color: greyDEDEDE,
+  //             ),
+  //           ),
+  //           Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text(
+  //                 minute,
+  //                 style: TextStyle(
+  //                   fontSize: 24,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: greyDEDEDE,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'min',
+  //                 style: TextStyle(
+  //                   // fontSize: 30,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: greyDEDEDE,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   String getHourString({@required String hour}) {
     int hourInt = int.parse(hour).abs();

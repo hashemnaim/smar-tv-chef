@@ -41,7 +41,6 @@ class Order {
     total = json['total'].toString();
     deliveryTime = json['admin']['delivery_time'];
     orderTime = json['admin']['delivery_date'];
-    // json['date'];
     customerName = json['customer']['name'];
     customerMobile = json['customer']['mobile'];
     if (json['product_list'].length != 0) {
@@ -52,34 +51,60 @@ class Order {
     }
   }
 
-  @override
-  String toString() {
-    return 'id: $id, code: $orderCode, status: $status';
-  }
+  // @override
+  // String toString() {
+  //   return 'id: $id, code: $orderCode, status: $status';
+  // }
 }
 
 class Product {
-  String productName;
+  String name;
   String size;
   String dough;
   String spicy;
-  List<String> component = new List<String>();
-  List<Map> basicComponent = new List<Map>();
-  List<Map> newComponent = new List<Map>();
-  List<Map> delComponent = new List<Map>();
-  List<String> entrees = new List<String>();
   int quantity;
   int changeComp;
-  int price;
+  var price;
+  List<Data> data;
 
   Product({
-    this.productName,
+    this.name,
     this.size,
     this.dough,
     this.spicy,
     this.quantity,
     this.price,
     this.changeComp,
+    this.data,
+  });
+
+  Product.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    size = json['size'];
+    dough = json['dough'];
+    spicy = json['spicy'];
+    quantity = json['qty'];
+    price = json['item_total'];
+    changeComp = json['change_comp'];
+    if (json['data'].length != 0) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
+  }
+}
+
+class Data {
+  String productName;
+  List<String> component = new List<String>();
+  List<Map> basicComponent = new List<Map>();
+  List<Map> newComponent = new List<Map>();
+  List<Map> delComponent = new List<Map>();
+  List<String> entrees = new List<String>();
+
+  Data({
+    this.productName,
     this.delComponent = const [],
     this.newComponent = const [],
     this.basicComponent = const [],
@@ -87,41 +112,37 @@ class Product {
     this.entrees = const [],
   });
 
-  Product.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     productName = json['name'];
-    size = json['size'];
-    dough = json['dough'];
-    spicy = json['spicy'];
-    quantity = json['qty'];
-    price = json['item_total'];
-    changeComp = json['change_comp'];
-    if (json['data'][0]['component'].length != 0) {
-      json['data'][0]['component'].forEach((v) {
+
+    if (json['component'].length != 0) {
+      json['component'].forEach((v) {
         component.add(v);
       });
-      if (json['data'][0]['basic_component'].length != 0) {
-        json['data'][0]['basic_component'].forEach((v) {
+      if (json['basic_component'].length != 0) {
+        json['basic_component'].forEach((v) {
           basicComponent.add(v);
-        });}
+        });
+      }
 
-        if (json['data'][0]['new_component'].length != 0) {
-          json['data'][0]['new_component'].forEach((v) {
-            newComponent.add(v);
-          });
-        }
-        if (json['data'][0]['del_component'].length != 0) {
-          json['data'][0]['del_component'].forEach((v) {
-            delComponent.add(v);
-          });
-        }
-        if (json['data'][0]['entrees'].length != 0) {
-          json['data'][0]['entrees'].forEach((v) {
-            entrees.add(v);
-          });
-        }
+      if (json['new_component'].length != 0) {
+        json['new_component'].forEach((v) {
+          newComponent.add(v);
+        });
+      }
+      if (json['del_component'].length != 0) {
+        json['del_component'].forEach((v) {
+          delComponent.add(v);
+        });
+      }
+      if (json['entrees'].length != 0) {
+        json['entrees'].forEach((v) {
+          entrees.add(v);
+        });
       }
     }
   }
+}
 
 //   Map<String, dynamic> toJson() {
 //     final Map<String, dynamic> data = new Map<String, dynamic>();
